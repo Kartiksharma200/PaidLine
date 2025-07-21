@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results ignored="0" total="3" passed="3" failed="0" skipped="0">
+  <reporter-output>
+  </reporter-output>
+  <suite started-at="2025-07-15T14:05:29 IST" name="Surefire suite" finished-at="2025-07-15T14:05:38 IST" duration-ms="8861">
+    <groups>
+    </groups>
+    <test started-at="2025-07-15T14:05:29 IST" name="Surefire test" finished-at="2025-07-15T14:05:38 IST" duration-ms="8861">
+      <class name="tests.HelpTest">
+        <test-method is-config="true" signature="setupReport()[pri:0, instance:tests.HelpTest@351d00c0]" started-at="2025-07-15T14:05:29 IST" name="setupReport" finished-at="2025-07-15T14:05:29 IST" duration-ms="285" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setupReport -->
+        <test-method is-config="true" signature="setUp()[pri:0, instance:tests.HelpTest@351d00c0]" started-at="2025-07-15T14:05:29 IST" name="setUp" finished-at="2025-07-15T14:05:37 IST" duration-ms="7891" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method signature="loginToApp()[pri:1, instance:tests.HelpTest@351d00c0]" started-at="2025-07-15T14:05:37 IST" name="loginToApp" finished-at="2025-07-15T14:05:38 IST" duration-ms="605" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- loginToApp -->
+        <test-method signature="testSubmitFeedback()[pri:2, instance:tests.HelpTest@351d00c0]" started-at="2025-07-15T14:05:38 IST" name="testSubmitFeedback" finished-at="2025-07-15T14:05:38 IST" duration-ms="87" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testSubmitFeedback -->
+        <test-method signature="testSubmitRaiseTicket()[pri:3, instance:tests.HelpTest@351d00c0]" started-at="2025-07-15T14:05:38 IST" name="testSubmitRaiseTicket" finished-at="2025-07-15T14:05:38 IST" duration-ms="33" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testSubmitRaiseTicket -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:tests.HelpTest@351d00c0]" started-at="2025-07-15T14:05:38 IST" name="tearDown" finished-at="2025-07-15T14:05:38 IST" duration-ms="193" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+        <test-method is-config="true" signature="flushReport()[pri:0, instance:tests.HelpTest@351d00c0]" started-at="2025-07-15T14:05:38 IST" name="flushReport" finished-at="2025-07-15T14:05:39 IST" duration-ms="823" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- flushReport -->
+      </class> <!-- tests.HelpTest -->
+    </test> <!-- Surefire test -->
+  </suite> <!-- Surefire suite -->
+</testng-results>
