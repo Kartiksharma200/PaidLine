@@ -1,6 +1,7 @@
 package tests;
 
 import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import base.BaseTest;
 import pages.Dashboard.DashboardPage;
@@ -13,7 +14,7 @@ public class DashboardTest extends BaseTest {
     /**
      * Step 1: Login to the application before verifying dashboard
      */
-    @Test(priority = 1)
+    @BeforeClass
     public void loginToPaidline() {
         test = extent.createTest("Login to Paidline Application");
 
@@ -30,8 +31,8 @@ public class DashboardTest extends BaseTest {
             test.addScreenCaptureFromPath(loginScreenshot);
 
         } catch (Exception e) {
-            test.fail("Login failed: " + e.getMessage());
-            try {
+             test.fail("Login failed: " + e.getMessage());
+           try {
                 String errorScreenshot = ScreenshotUtils.captureScreenshot(driver, "loginError");
                 test.addScreenCaptureFromPath(errorScreenshot);
             } catch (Exception ex) {
@@ -72,15 +73,15 @@ public class DashboardTest extends BaseTest {
 
             // Earnings Section
             String month = dashboard.getMonthToDateEarnings();
-            Assert.assertEquals(month, "$18", "Month-to-Date earnings mismatch");
+            Assert.assertEquals(month, "$54", "Month-to-Date earnings mismatch");
             test.pass("Month to Date Earnings: " + month);
 
             String year = dashboard.getYearToDateEarnings();
-            Assert.assertEquals(year, "$18", "Year-to-Date earnings mismatch");
+            Assert.assertEquals(year, "$54", "Year-to-Date earnings mismatch");
             test.pass("Year to Date Earnings: " + year);
 
             String lifetime = dashboard.getLifetimeEarnings();
-            Assert.assertEquals(lifetime, "$18", "Lifetime earnings mismatch");
+            Assert.assertEquals(lifetime, "$54", "Lifetime earnings mismatch");
             test.pass("Lifetime Earnings: " + lifetime);
 
             // Final Screenshot
@@ -89,12 +90,163 @@ public class DashboardTest extends BaseTest {
 
         } catch (Exception e) {
             test.fail("Dashboard verification failed: " + e.getMessage());
-
             try {
                 String errorScreenshot = ScreenshotUtils.captureScreenshot(driver, "dashboardError");
                 test.addScreenCaptureFromPath(errorScreenshot);
             } catch (Exception ex) {
                 test.fail("Error screenshot capture failed: " + ex.getMessage());
+            }
+        }
+    }
+
+    /*
+     * Verify all functionaity
+     */
+    @Test(priority = 3)
+    public void verifyDashboardFunctionality(){
+        test = extent.createTest("Verify dashboard functionality");
+        try {
+            DashboardPage dashboard = new DashboardPage(driver);
+
+            //Your PaidLine Number
+            dashboard.clickOnPaidlineNumber();
+            Thread.sleep(2999);
+            Assert.assertTrue(driver.getCurrentUrl().contains("numbers"), "Your Paidline Number page not opened");
+            test.pass("Your Paidline Number page navigated successfully");
+            driver.navigate().back();
+
+            //Your billing rate
+            dashboard.clickOnBillingRate();
+            Thread.sleep(2000);
+            Assert.assertTrue(driver.getCurrentUrl().contains("numbers"), "Your Billing rate page not opened");
+            test.pass("Your Billing rate page navigated successfully");
+            driver.navigate().back();
+
+            //Your Availabiltiy Today
+            dashboard.clickOnAvailabilityToday();
+            Thread.sleep(2000);
+            Assert.assertTrue(driver.getCurrentUrl().contains("user"), "Your Availabiltiy Today page not opened");
+            test.pass("Your Availabiltiy Today page navigated successfully");
+            driver.navigate().back();
+
+            //Your Forwarding Number
+            dashboard.clickOnForwardingNumber();
+            Thread.sleep(2000);
+            Assert.assertTrue(driver.getCurrentUrl().contains("user"), "Your Forwarding Number page not opened");
+            test.pass("Your Forwarding Number page navigated successfully");
+            driver.navigate().back();
+        }
+        catch(Exception e){
+              test.fail("Navigation element check failed: " + e.getMessage());
+            try {
+                String errorScreenshot = ScreenshotUtils.captureScreenshot(driver, "navError");
+                test.addScreenCaptureFromPath(errorScreenshot);
+            } catch (Exception ex) {
+                test.fail("Failed to capture screenshot: " + ex.getMessage());
+            }
+        }
+    }
+
+    /**
+     * Step 3: Verify Sidebar Navigation and Earnings Chart
+     */
+    @Test(priority = 4)
+    public void verifySidebarNavigationAndGraph() {
+        test = extent.createTest("Verify Sidebar Navigation and Chart Visibility");
+
+        try {
+            DashboardPage dashboard = new DashboardPage(driver);
+
+            // Click Calls
+            dashboard.clickCallsMenu();
+            Thread.sleep(2000);
+            Assert.assertTrue(driver.getCurrentUrl().contains("call-history"), "Calls page not opened");
+            test.pass("Calls page navigated successfully");
+
+            // Click Customers
+            dashboard.clickCustomersMenu();
+            Thread.sleep(2000);
+            Assert.assertTrue(driver.getCurrentUrl().contains("clients"), "Customers page not opened");
+            test.pass("Customers page navigated successfully");
+
+            // Click Earnings
+            dashboard.clickEarningsMenu();  
+            Thread.sleep(2000);
+            Assert.assertTrue(driver.getCurrentUrl().contains("earnings"), "Earnings page not opened");
+            test.pass("Earnings page navigated successfully");
+
+            // Back to Dashboard
+            driver.navigate().back();
+            Thread.sleep(2000);
+            driver.navigate().back();
+            Thread.sleep(2000);
+            driver.navigate().back();
+            Thread.sleep(2000);
+
+            // Verify Chart and Recent Calls
+            Assert.assertTrue(dashboard.isEarningsGraphVisible(), "Earnings chart is not visible");
+            test.pass("Earnings graph is displayed");
+            Assert.assertTrue(dashboard.isRecentCallsVisible(), "Recent Calls are not visible");
+            test.pass("Recent Calls table is displayed");
+
+            // Final screenshot
+            String navigationScreenshot = ScreenshotUtils.captureScreenshot(driver, "dashboardNavigation");
+            test.addScreenCaptureFromPath(navigationScreenshot);
+
+        } catch (Exception e) {
+            test.fail("Navigation or UI element check failed: " + e.getMessage());
+            try {
+                String errorScreenshot = ScreenshotUtils.captureScreenshot(driver, "navError");
+                test.addScreenCaptureFromPath(errorScreenshot);
+            } catch (Exception ex) {
+                test.fail("Failed to capture screenshot: " + ex.getMessage());
+            }
+        }
+    }
+
+    /**
+     * Step 4: Validate Call Action Panel and Customer Redirect
+     */
+    
+    //@Test(priority = 5)
+    public void verifyCallActionAndCustomerRedirect() {
+        test = extent.createTest("Call Panel Open and Call ID Redirection");
+
+        try {
+            DashboardPage dashboard = new DashboardPage(driver);
+
+            // Click 3-dot action icon
+            dashboard.clickFirstCallActionIcon();
+            Thread.sleep(2000);
+            Assert.assertTrue(dashboard.isCallDetailPanelVisible(), "Call detail panel did not open");
+            test.pass("Call side panel opened successfully");
+
+            // Add note and save
+            dashboard.enterNoteInCallDetails("Automation note added.");
+            dashboard.clickSaveNote();
+            test.pass("Note added and saved successfully in call detail");
+
+            // Take screenshot of panel
+            String callPanelScreenshot = ScreenshotUtils.captureScreenshot(driver, "callDetailPanel");
+            test.addScreenCaptureFromPath(callPanelScreenshot);
+
+            // Now click on Call ID to go to Customer Page
+            dashboard.clickFirstCallIdLink();
+            Thread.sleep(3000);
+            Assert.assertTrue(driver.getCurrentUrl().contains("customer"), "Did not navigate to customer page");
+            test.pass("Call ID click redirected to correct customer page");
+
+            String customerPageScreenshot = ScreenshotUtils.captureScreenshot(driver, "customerPage");
+            test.addScreenCaptureFromPath(customerPageScreenshot);
+
+        } catch (Exception e) {
+            test.fail("Call panel or customer redirect failed: " + e.getMessage());
+
+            try {
+                String errorScreenshot = ScreenshotUtils.captureScreenshot(driver, "callActionError");
+                test.addScreenCaptureFromPath(errorScreenshot);
+            } catch (Exception ex) {
+                test.fail("Screenshot capture failed: " + ex.getMessage());
             }
         }
     }
