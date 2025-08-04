@@ -44,7 +44,8 @@ public class DashboardTest extends BaseTest {
     /**
      * Step 2: Validate Dashboard metrics and earnings
      */
-    @Test(priority = 2)
+    @Test(priority = 1, description = "Verify Dashboard Data and Earnings", enabled = true,
+            groups = {"smoke", "regression"})
     public void verifyDashboardData() {
         test = extent.createTest("Verify Dashboard Cards and Earnings");
 
@@ -102,7 +103,8 @@ public class DashboardTest extends BaseTest {
     /*
      * Verify all functionaity
      */
-    @Test(priority = 3)
+    @Test(priority = 2, description = "Verify all dashboard functionality", enabled = true,
+            groups = {"smoke", "regression"}, dependsOnMethods = "verifyDashboardData")
     public void verifyDashboardFunctionality(){
         test = extent.createTest("Verify dashboard functionality");
         try {
@@ -150,7 +152,8 @@ public class DashboardTest extends BaseTest {
     /**
      * Step 3: Verify Sidebar Navigation and Earnings Chart
      */
-    @Test(priority = 4)
+    @Test(priority = 3, description = "Verify Sidebar Navigation and Chart Visibility", enabled = true,
+            groups = {"smoke", "regression"}, dependsOnMethods = "verifyDashboardFunctionality")
     public void verifySidebarNavigationAndGraph() {
         test = extent.createTest("Verify Sidebar Navigation and Chart Visibility");
 
@@ -208,7 +211,8 @@ public class DashboardTest extends BaseTest {
      * Step 4: Validate Call Action Panel and Customer Redirect
      */
     
-    //@Test(priority = 5)
+    @Test(priority = 4, description = "Verify Call Action Panel and Customer Redirect", enabled = true,
+            groups = {"smoke", "regression"}, dependsOnMethods = "verifySidebarNavigationAndGraph")
     public void verifyCallActionAndCustomerRedirect() {
         test = extent.createTest("Call Panel Open and Call ID Redirection");
 
