@@ -57,6 +57,7 @@ public class SettingPage {
   /*
    * Profile Information section Locators
    */
+  
   @FindBy(id = "userInfoEditBtn")
   @CacheLookup
   private WebElement piEditButton;

@@ -3,16 +3,17 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="tests.YourNumberTest">
+      <class name="tests.CallsTest">
         <methods>
           <include name="setUp"/>
           <include name="tearDown"/>
           <include name="setupReport"/>
-          <include name="verifyAndUpdateYourNumberSettings"/>
-          <include name="loginToPaidline"/>
+          <include name="verifyClientCallsPageAndFilters"/>
+          <include name="verifyVendorCallsPageAndFilters"/>
           <include name="flushReport"/>
+          <include name="loginToPaidlineApp"/>
         </methods>
-      </class> <!-- tests.YourNumberTest -->
+      </class> <!-- tests.CallsTest -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

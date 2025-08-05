@@ -10,7 +10,7 @@ import utils.TestData;
 
 public class SignUpTest extends BaseTest {
 
-    /**
+    /*
      * Scenario 1: Sign up with valid credentials
      * Expected Result: Successful sign-up
      */
@@ -68,7 +68,7 @@ public class SignUpTest extends BaseTest {
         }
     }
 
-    /**
+    /*
      * Scenario 3: Sign up with empty fields
      * Expected Result: Sign-Up button disabled or error displayed
      */
@@ -96,7 +96,7 @@ public class SignUpTest extends BaseTest {
         }
     }
 
-    /**
+    /*
      * Scenario 4: Sign up with an already registered email
      * Expected Result: Error "Email already exists"
      */
@@ -124,7 +124,7 @@ public class SignUpTest extends BaseTest {
         }
     }
 
-    /**
+    /*
      * Scenario 5: Sign up with weak password
      * Expected Result: Password strength validation error
      */

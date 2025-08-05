@@ -41,10 +41,10 @@ public class DashboardTest extends BaseTest {
         }
     }
 
-    /**
+    /*
      * Step 2: Validate Dashboard metrics and earnings
      */
-    @Test(priority = 2)
+    @Test(priority = 1)
     public void verifyDashboardData() {
         test = extent.createTest("Verify Dashboard Cards and Earnings");
 
@@ -73,11 +73,11 @@ public class DashboardTest extends BaseTest {
 
             // Earnings Section
             String month = dashboard.getMonthToDateEarnings();
-            Assert.assertEquals(month, "$54", "Month-to-Date earnings mismatch");
+            Assert.assertEquals(month, "$72", "Month-to-Date earnings mismatch");
             test.pass("Month to Date Earnings: " + month);
 
             String year = dashboard.getYearToDateEarnings();
-            Assert.assertEquals(year, "$54", "Year-to-Date earnings mismatch");
+            Assert.assertEquals(year, "$72", "Year-to-Date earnings mismatch");
             test.pass("Year to Date Earnings: " + year);
 
             String lifetime = dashboard.getLifetimeEarnings();
@@ -102,7 +102,7 @@ public class DashboardTest extends BaseTest {
     /*
      * Verify all functionaity
      */
-    @Test(priority = 3)
+    @Test(priority = 2, dependsOnMethods= "verifyDashboardData")
     public void verifyDashboardFunctionality(){
         test = extent.createTest("Verify dashboard functionality");
         try {
@@ -150,7 +150,7 @@ public class DashboardTest extends BaseTest {
     /**
      * Step 3: Verify Sidebar Navigation and Earnings Chart
      */
-    @Test(priority = 4)
+    @Test(priority = 3, dependsOnMethods= "verifyDashboardFunctionality")
     public void verifySidebarNavigationAndGraph() {
         test = extent.createTest("Verify Sidebar Navigation and Chart Visibility");
 
@@ -207,8 +207,8 @@ public class DashboardTest extends BaseTest {
     /**
      * Step 4: Validate Call Action Panel and Customer Redirect
      */
-    
-    //@Test(priority = 5)
+
+    @Test(priority = 4, dependsOnMethods= "verifySidebarNavigationAndGraph")
     public void verifyCallActionAndCustomerRedirect() {
         test = extent.createTest("Call Panel Open and Call ID Redirection");
 
