@@ -137,7 +137,6 @@ public class DashboardPage {
 
     public void clickOnBillingRate(){
         billingRate.click();
-
     }
 
     public String getAvailabilityToday() {
