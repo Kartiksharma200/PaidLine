@@ -116,19 +116,19 @@ public class CallsPage {
         clientBtn.click();
     }
 
-    public void clickPageTwo() {
+    public void clickPageTwo(){
         pageTwoBtn.click();
     }
 
-    public void clickNextPage() {
+    public void clickNextPage(){
         nextPageBtn.click();
     }
 
-    public int getTableRowCount() {
+    public int getTableRowCount(){
         return tableRows.size() - 1; // exclude header row
     }
 
-        public boolean isClientCallsDisplayed() {
+        public boolean isClientCallsDisplayed(){
     try {
         WebElement header = driver.findElement(By.xpath("//h5[contains(text(),'Your Call History')]"));  // example
         return header.isDisplayed();

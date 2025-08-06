@@ -1,4 +1,0 @@
-# Created at 2025-07-28T12:09:15.662
-
-tests.DashboardTest.verifyDashboardData() is depending on method public void tests.DashboardTest.loginToPaidline(), which is not annotated with @Test or not included.
-
