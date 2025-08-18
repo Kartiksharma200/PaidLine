@@ -45,16 +45,24 @@ public class CallsPage {
     @CacheLookup
     private WebElement missedFilterBtn;
 
+    @FindBy(xpath = "//button[text()='Inbound Call']")
+    @CacheLookup
+    private WebElement inboundCallFilterBtn;
+
+    @FindBy(xpath = "//button[text()='Returned Call']")
+    @CacheLookup
+    private WebElement returnedCallFilterBtn;
+
     // Selector for All rows in table
-    @FindBy(xpath = "")
+    @FindBy(xpath = "//table[@class=\"w-full table-auto border-collapse border-none outline-none\"]")
     @CacheLookup
     private WebElement callRows;
-    
+
     // Export Button
     @FindBy(xpath = "//span[contains(text(),'Export')]")
     @CacheLookup
     private WebElement exportBtn;
-    
+
     // As Client
     @FindBy(xpath = "//button[contains(text(),'As Client')]")
     @CacheLookup
@@ -95,7 +103,7 @@ public class CallsPage {
         Thread.sleep(2000);
     }
 
-      public void clickUnbilledFilter() throws InterruptedException {
+    public void clickUnbilledFilter() throws InterruptedException {
         unbilledFilterBtn.click();
         Thread.sleep(2000);
     }
@@ -104,40 +112,53 @@ public class CallsPage {
         missedFilterBtn.click();
         Thread.sleep(2000);
     }
-    
-    // == Export Dowload == 
+
+    public void clickInboundCallFilter() throws InterruptedException {
+        inboundCallFilterBtn.click();
+        Thread.sleep(2000);
+    }
+
+    public void clickReturnedCallFilter() throws InterruptedException {
+        returnedCallFilterBtn.click();
+        Thread.sleep(2000);
+    }
+
+    // == Export Dowload ==
     public void clickExport() throws InterruptedException {
         exportBtn.click();
         Thread.sleep(3000);
     }
-    
+
     // == As Client ==
-    public void clickOnClientbtn(){
+    public void clickOnClientbtn() {
         clientBtn.click();
     }
 
-    public void clickPageTwo(){
+    public void clickPageTwo() {
         pageTwoBtn.click();
     }
 
-    public void clickNextPage(){
+    public void clickNextPage() {
         nextPageBtn.click();
     }
 
-    public int getTableRowCount(){
+    public int getTableRowCount() {
         return tableRows.size() - 1; // exclude header row
     }
 
-        public boolean isClientCallsDisplayed(){
-    try {
-        WebElement header = driver.findElement(By.xpath("//h5[contains(text(),'Your Call History')]"));  // example
-        return header.isDisplayed();
-    } catch (Exception e) {
-        return false;
-    }
-}
+    public boolean isClientCallsDisplayed() {
 
-   // Returns count of rows in current view
+        try {
+
+            WebElement header = driver.findElement(By.xpath("//h5[contains(text(),'Your Call History')]")); // example
+            return header.isDisplayed();
+
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    // Returns count of rows in current view
     public int getRowCount() {
         List<WebElement> rows = driver.findElements((By) callRows);
         return rows.size();
@@ -147,6 +168,5 @@ public class CallsPage {
     public int getCallCountByStatus(String status) {
         return driver.findElements(By.xpath("//td[contains(text(),'" + status + "')]")).size();
     }
-
 
 }

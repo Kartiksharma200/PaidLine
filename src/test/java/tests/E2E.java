@@ -36,7 +36,7 @@ public class E2E extends BaseTest {
     }
 
     /**
-     * Step 2: Verify Dashboard by setting number settings
+     * Step 2: Verify Dash-board by setting number settings
      */
     @Test(priority = 2)
     public void verifyDashboard() {

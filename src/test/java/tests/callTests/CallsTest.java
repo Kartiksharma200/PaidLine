@@ -48,14 +48,10 @@ public class CallsTest extends BaseTest {
 	        } catch (Exception ex) {
 	            test.fail("Failed to capture login error screenshot: " + ex.getMessage());
 	        }
-
 	        // Force test to fail if login fails
 	        throw new RuntimeException(e);
 	    }
 	}
-
-
-
     /*
      * Step 2: Verify Vendor Calls page functionality after login
      */
@@ -86,6 +82,14 @@ public class CallsTest extends BaseTest {
             // Click "Missed" filter
             callsPage.clickMissedFilter();
             test.pass("Clicked on Missed filter");
+
+            // Click "Inbound Call" filter
+            callsPage.clickInboundCallFilter();
+            test.pass("Clicked on Inbound Call filter");
+
+            // Click "Returned Call" filter
+            callsPage.clickReturnedCallFilter();
+            test.pass("Clicked on Returned Call filter");
 
             // Click "All" filter
             callsPage.clickAllFilter();
@@ -138,9 +142,9 @@ public class CallsTest extends BaseTest {
 
             // Click "Billed" Filter
             callsPage.clickbilledFilter();
-            test.pass("Clicked on Billed filter");
+            test.pass("Clicked on Billed filter"); 
 
-            // Click "Unbilled" Filter
+            // Click "Un-billed" Filter
             callsPage.clickUnbilledFilter();
             test.pass("Clicked on Unbilled filter");
 
@@ -151,6 +155,7 @@ public class CallsTest extends BaseTest {
             // Click "All" filter
             callsPage.clickAllFilter();
             test.pass("Clicked on All filter");
+            
 
         } catch (Exception e) {
             test.fail("Client Calls page test failed: " + e.getMessage());
@@ -161,12 +166,8 @@ public class CallsTest extends BaseTest {
             } catch (Exception ex) {
                 test.fail("Error screenshot capture failed: " + ex.getMessage());
             }
-
             // ✅ Make test fail
             throw new RuntimeException(e);
         }
     }
-
-
-
 }

@@ -3,9 +3,12 @@ package tests;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
 import base.BaseTest;
 import pages.Dashboard.DashboardPage;
 import pages.OnboardingFlow.SignInPage;
+import tests.callDetailTestApi.FetchCallDetails;
+import tests.earningDetailTestApi.earningDetails;
 import utils.ScreenshotUtils;
 import utils.TestData;
 
@@ -31,8 +34,8 @@ public class DashboardTest extends BaseTest {
             test.addScreenCaptureFromPath(loginScreenshot);
 
         } catch (Exception e) {
-             test.fail("Login failed: " + e.getMessage());
-           try {
+            test.fail("Login failed: " + e.getMessage());
+            try {
                 String errorScreenshot = ScreenshotUtils.captureScreenshot(driver, "loginError");
                 test.addScreenCaptureFromPath(errorScreenshot);
             } catch (Exception ex) {
@@ -100,44 +103,43 @@ public class DashboardTest extends BaseTest {
     }
 
     /*
-     * Verify all functionaity
+     * Verify all functionality
      */
-    @Test(priority = 2, dependsOnMethods= "verifyDashboardData")
-    public void verifyDashboardFunctionality(){
+    @Test(priority = 2, dependsOnMethods = "verifyDashboardData")
+    public void verifyDashboardFunctionality() {
         test = extent.createTest("Verify dashboard functionality");
         try {
             DashboardPage dashboard = new DashboardPage(driver);
 
-            //Your PaidLine Number
+            // Your PaidLine Number
             dashboard.clickOnPaidlineNumber();
             Thread.sleep(2999);
             Assert.assertTrue(driver.getCurrentUrl().contains("numbers"), "Your Paidline Number page not opened");
             test.pass("Your Paidline Number page navigated successfully");
             driver.navigate().back();
 
-            //Your billing rate
+            // Your billing rate
             dashboard.clickOnBillingRate();
             Thread.sleep(2000);
             Assert.assertTrue(driver.getCurrentUrl().contains("numbers"), "Your Billing rate page not opened");
             test.pass("Your Billing rate page navigated successfully");
             driver.navigate().back();
 
-            //Your Availabiltiy Today
+            // Your Availabiltiy Today
             dashboard.clickOnAvailabilityToday();
             Thread.sleep(2000);
             Assert.assertTrue(driver.getCurrentUrl().contains("user"), "Your Availabiltiy Today page not opened");
             test.pass("Your Availabiltiy Today page navigated successfully");
             driver.navigate().back();
 
-            //Your Forwarding Number
+            // Your Forwarding Number
             dashboard.clickOnForwardingNumber();
             Thread.sleep(2000);
             Assert.assertTrue(driver.getCurrentUrl().contains("user"), "Your Forwarding Number page not opened");
             test.pass("Your Forwarding Number page navigated successfully");
             driver.navigate().back();
-        }
-        catch(Exception e){
-              test.fail("Navigation element check failed: " + e.getMessage());
+        } catch (Exception e) {
+            test.fail("Navigation element check failed: " + e.getMessage());
             try {
                 String errorScreenshot = ScreenshotUtils.captureScreenshot(driver, "navError");
                 test.addScreenCaptureFromPath(errorScreenshot);
@@ -150,7 +152,7 @@ public class DashboardTest extends BaseTest {
     /**
      * Step 3: Verify Sidebar Navigation and Earnings Chart
      */
-    @Test(priority = 3, dependsOnMethods= "verifyDashboardFunctionality")
+    @Test(priority = 3, dependsOnMethods = "verifyDashboardFunctionality")
     public void verifySidebarNavigationAndGraph() {
         test = extent.createTest("Verify Sidebar Navigation and Chart Visibility");
 
@@ -170,7 +172,7 @@ public class DashboardTest extends BaseTest {
             test.pass("Customers page navigated successfully");
 
             // Click Earnings
-            dashboard.clickEarningsMenu();  
+            dashboard.clickEarningsMenu();
             Thread.sleep(2000);
             Assert.assertTrue(driver.getCurrentUrl().contains("earnings"), "Earnings page not opened");
             test.pass("Earnings page navigated successfully");
@@ -208,7 +210,7 @@ public class DashboardTest extends BaseTest {
      * Step 4: Validate Call Action Panel and Customer Redirect
      */
 
-    @Test(priority = 4, dependsOnMethods= "verifySidebarNavigationAndGraph")
+    @Test(priority = 4, dependsOnMethods = "verifySidebarNavigationAndGraph")
     public void verifyCallActionAndCustomerRedirect() {
         test = extent.createTest("Call Panel Open and Call ID Redirection");
 
@@ -247,6 +249,35 @@ public class DashboardTest extends BaseTest {
                 test.addScreenCaptureFromPath(errorScreenshot);
             } catch (Exception ex) {
                 test.fail("Screenshot capture failed: " + ex.getMessage());
+            }
+        }
+    }
+
+    public void verifyEarningDataFromApi() {
+        test = extent.createTest("Verify Earnings Data from API");
+
+        try {
+            // Call the API method to fetch earnings data
+            earningDetails earningDetailsApi = new earningDetails();
+            FetchCallDetails fetchCallDetailsApi = new FetchCallDetails();
+            // String currentMonth = df.format(currentMonthEarning / 100);
+            // String currentYear = df.format(currentYearEarning / 100);
+            // String lifeTime = df.format(lifeTimeEarning / 100);
+            // String lastMonth = df.format(lastMonthPayout / 100);
+            // String currentYearPay = df.format(currentYearPayout / 100);
+            // String lifeTimePay = df.format(lifeTimePayout / 100);
+            // String nextPay = df.format(nextPayout / 100);
+            // String bal = df.format(balance / 100);
+            
+
+            test.pass("Earnings data fetched successfully from API");
+        } catch (Exception e) {
+            test.fail("Failed to fetch earnings data from API: " + e.getMessage());
+            try {
+                String errorScreenshot = ScreenshotUtils.captureScreenshot(driver, "apiError");
+                test.addScreenCaptureFromPath(errorScreenshot);
+            } catch (Exception ex) {
+                test.fail("Failed to capture API error screenshot: " + ex.getMessage());
             }
         }
     }
