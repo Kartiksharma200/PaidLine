@@ -1,5 +1,8 @@
 package pages.Dashboard;
 
+import java.util.List;
+
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
@@ -24,7 +27,7 @@ public class DashboardPage {
 
     @FindBy(xpath = "//p[contains(text(),'Your Billing Rate')]")
     @CacheLookup
-    private WebElement billingRate; //Billing rate box
+    private WebElement billingRate; // Billing rate box
 
     @FindBy(xpath = "(//p[contains(text(),'$')])[1]")
     @CacheLookup
@@ -72,6 +75,10 @@ public class DashboardPage {
     private WebElement lifetimeValue;
 
     // Additional Elements for Sidebar & Calls Section
+    @FindBy(xpath = "//span[text()='Your Numbers']/parent::a")
+    @CacheLookup
+    private WebElement yourNumbersMenu;
+
     @FindBy(xpath = "//span[text()='Calls']/parent::a")
     @CacheLookup
     private WebElement callsMenu;
@@ -83,6 +90,17 @@ public class DashboardPage {
     @FindBy(xpath = "//span[text()='Earnings']/parent::a")
     @CacheLookup
     private WebElement earningsMenu;
+
+    @FindBy(xpath = "//span[text()='Settings']/parent::a")
+    @CacheLookup
+    private WebElement settingsMenu;
+
+    @FindBy(xpath = "//span[text()='Help']/parent::a")
+    @CacheLookup
+    private WebElement helpMenu;
+
+
+
 
     @FindBy(xpath = "//h2[contains(text(),'Your Recent Calls')]")
     @CacheLookup
@@ -117,6 +135,31 @@ public class DashboardPage {
     @CacheLookup
     private WebElement cancelNoteButton;
 
+    // Recent Calls Section
+    @FindBy(xpath = "//p[text()='All']")
+    @CacheLookup
+    private WebElement allFilterBtn;
+
+    @FindBy(xpath = "//p[text()='Billed']")
+    @CacheLookup
+    private WebElement billedFilterBtn;
+
+    @FindBy(xpath = "//p[text()='Unbilled']")
+    @CacheLookup
+    private WebElement unbilledFilterBtn;
+
+    @FindBy(xpath = "//p[text()='Missed']")
+    @CacheLookup
+    private WebElement missedFilterBtn;
+
+    @FindBy(xpath = "//p[text()='Inbound Call']")
+    @CacheLookup
+    private WebElement inboundCallFilterBtn;
+
+    @FindBy(xpath = "//p[text()='Returned Call']")
+    @CacheLookup
+    private WebElement returnedCallFilterBtn;
+
     // Call ID link to redirect to customer
     @FindBy(xpath = "(//table//tr[1]/td[1]/a)")
     @CacheLookup
@@ -127,7 +170,7 @@ public class DashboardPage {
         return paidlineNumberValue.getText();
     }
 
-    public void clickOnPaidlineNumber(){
+    public void clickOnPaidlineNumber() {
         paidlineNumber.click();
     }
 
@@ -135,7 +178,7 @@ public class DashboardPage {
         return billingRateValue.getText();
     }
 
-    public void clickOnBillingRate(){
+    public void clickOnBillingRate() {
         billingRate.click();
     }
 
@@ -143,7 +186,7 @@ public class DashboardPage {
         return availabilityTodayValue.getText();
     }
 
-    public void clickOnAvailabilityToday(){
+    public void clickOnAvailabilityToday() {
         availabilityToday.click();
     }
 
@@ -151,7 +194,7 @@ public class DashboardPage {
         return forwardingNumberValue.getText();
     }
 
-    public void clickOnForwardingNumber(){
+    public void clickOnForwardingNumber() {
         forwardingNumber.click();
     }
 
@@ -167,7 +210,73 @@ public class DashboardPage {
         return lifetimeValue.getText();
     }
 
+    // Recent Calls Section
+    // == Filters ==
+    public void clickAllFilter() throws InterruptedException {
+        allFilterBtn.click();
+        Thread.sleep(2000);
+    }
+
+    public void clickbilledFilter() throws InterruptedException {
+        billedFilterBtn.click();
+        Thread.sleep(2000);
+    }
+
+    public void clickUnbilledFilter() throws InterruptedException {
+        unbilledFilterBtn.click();
+        Thread.sleep(2000);
+    }
+
+    public void clickMissedFilter() throws InterruptedException {
+        missedFilterBtn.click();
+        Thread.sleep(2000);
+    }
+
+    public void clickInboundCallFilter() throws InterruptedException {
+        inboundCallFilterBtn.click();
+        Thread.sleep(2000);
+    }
+
+    public void clickReturnedCallFilter() throws InterruptedException {
+        returnedCallFilterBtn.click();
+        Thread.sleep(2000);
+    }
+
+    public int getCallCountByStatus(String status) {
+        // Locate all rows in the Recent Calls table
+        List<WebElement> rows = driver.findElements(By.cssSelector("table#recent-calls tbody tr"));
+
+        if (status.equalsIgnoreCase("All")) {
+            return rows.size();
+        }
+
+        int count = 0;
+        for (WebElement row : rows) {
+            // Assuming the status is in the 4th column (index 3), adjust as needed
+            String callStatus = row.findElement(By.cssSelector("td:nth-child(4)")).getText().trim();
+            if (callStatus.equalsIgnoreCase(status)) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    /**
+     * Returns the number of rows in the Recent Calls table.
+     * 
+     * @return the row count
+     */
+    public int getRowCount() {
+        // Adjust the selector to match your table's actual structure
+        List<WebElement> rows = driver.findElements(By.cssSelector("table#recent-calls tbody tr"));
+        return rows.size();
+    }
+
     // Actions
+    public void clickYourNumbersMenu() {
+        yourNumbersMenu.click();
+    }
+
     public void clickCallsMenu() {
         callsMenu.click();
     }
@@ -178,6 +287,14 @@ public class DashboardPage {
 
     public void clickEarningsMenu() {
         earningsMenu.click();
+    }
+
+    public void clickSettingsMenu() {
+        settingsMenu.click();
+    }
+    
+    public void clickHelpMenu() {
+        helpMenu.click();
     }
 
     public boolean isEarningsGraphVisible() {

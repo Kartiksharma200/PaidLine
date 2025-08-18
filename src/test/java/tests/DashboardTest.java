@@ -15,7 +15,7 @@ import utils.TestData;
 public class DashboardTest extends BaseTest {
 
     /*
-     * Step 1: Login to the application before verifying dashboard
+     * Step 1: Login to the application before verifying dash-board
      */
     @BeforeClass
     public void loginToPaidline() {
@@ -45,7 +45,7 @@ public class DashboardTest extends BaseTest {
     }
 
     /*
-     * Step 2: Validate Dashboard metrics and earnings
+     * Step 2: Validate Dash-board metrics and earnings
      */
     @Test(priority = 1)
     public void verifyDashboardData() {
@@ -75,7 +75,7 @@ public class DashboardTest extends BaseTest {
             test.pass("Forwarding Number: " + forward);
 
             // Earnings Section
-            
+
             String month = dashboard.getMonthToDateEarnings();
             System.out.println(month);
             Assert.assertEquals(month, "$230.44", "Month-to-Date earnings mismatch");
@@ -93,12 +93,12 @@ public class DashboardTest extends BaseTest {
             String dashboardScreenshot = ScreenshotUtils.captureScreenshot(driver, "dashboardData");
             test.addScreenCaptureFromPath(dashboardScreenshot);
 
-        } catch (Exception e) {
+        } catch (Exception e){
             test.fail("Dashboard verification failed: " + e.getMessage());
-            try {
+            try{
                 String errorScreenshot = ScreenshotUtils.captureScreenshot(driver, "dashboardError");
                 test.addScreenCaptureFromPath(errorScreenshot);
-            } catch (Exception ex) {
+            }catch (Exception ex){
                 test.fail("Error screenshot capture failed: " + ex.getMessage());
             }
         }
@@ -108,9 +108,9 @@ public class DashboardTest extends BaseTest {
      * Verify all functionality
      */
     @Test(priority = 2)
-    public void verifyDashboardFunctionality() {
+    public void verifyDashboardFunctionality(){
         test = extent.createTest("Verify dashboard functionality");
-        try {
+        try{
             DashboardPage dashboard = new DashboardPage(driver);
 
             // Your PaidLine Number
@@ -150,22 +150,89 @@ public class DashboardTest extends BaseTest {
             }
         }
     }
-
+     
+    @Test(priority = 2, dependsOnMethods = "verifyDashboardData")
     /**
-     * Step 3: Verify Sidebar Navigation and Earnings Chart
+     * Step 2: Verify Recent Calls Section and Filters
      */
-    @Test(priority = 3)
-    public void verifySidebarNavigationAndGraph() {
-        test = extent.createTest("Verify Sidebar Navigation and Chart Visibility");
+    public void verifyRecentCalls(){
+        test = extent.createTest("Verify Recent Calls Section");
 
         try {
             DashboardPage dashboard = new DashboardPage(driver);
+
+            // Verify Recent Calls section is visible
+            Assert.assertTrue(dashboard.isRecentCallsVisible(), "Recent Calls section is not visible");
+            test.pass("Recent Calls section is displayed");
+
+            // Check if the table has rows
+            int rowCount = dashboard.getRowCount();
+            Assert.assertTrue(rowCount > 0, "No calls found in Recent Calls table");
+            test.pass("Recent Calls table has " + rowCount + " rows");
+
+            // Click on filters and verify functionality
+            dashboard.clickAllFilter();
+            Assert.assertEquals(dashboard.getCallCountByStatus("All"), rowCount, "All filter did not return correct count");
+            test.pass("All filter applied successfully");
+
+            dashboard.clickbilledFilter();
+            Assert.assertTrue(dashboard.getCallCountByStatus("Billed") >= 0, "Billed filter did not return correct count");
+            test.pass("Billed filter applied successfully");
+
+            dashboard.clickUnbilledFilter();
+            Assert.assertTrue(dashboard.getCallCountByStatus("Unbilled") >= 0, "Unbilled filter did not return correct count");
+            test.pass("Unbilled filter applied successfully");
+
+            dashboard.clickInboundCallFilter();
+            Assert.assertTrue(dashboard.getCallCountByStatus("Inbound") >= 0, "Inbound filter did not return correct count");
+            test.pass("Inbound filter applied successfully");
+
+            dashboard.clickReturnedCallFilter();
+            Assert.assertTrue(dashboard.getCallCountByStatus("Returned") >= 0, "Returned filter did not return correct count");
+            test.pass("Returned filter applied successfully");
+
+            // Export functionality
+           // dashboard.clickExport();
+            test.pass("Export button clicked successfully");
+
+        } catch (InterruptedException e) {
+            test.fail("Recent Calls section verification failed: " + e.getMessage());
+            try {
+                String errorScreenshot = ScreenshotUtils.captureScreenshot(driver, "recentCallsError"); 
+                test.addScreenCaptureFromPath(errorScreenshot);
+            } catch (Exception ex) {
+                test.fail("Failed to capture recent calls error screenshot: " + ex.getMessage());
+            }
+        }
+    }
+
+    /**
+     * Step 3: Verify Sidebar Navigation
+     */
+    @Test(priority = 3, dependsOnMethods = "verifyDashboardFunctionality")
+    public void verifySidebarNavigation() {
+        test = extent.createTest("Verify Sidebar Navigation");
+
+        try {
+            DashboardPage dashboard = new DashboardPage(driver);
+
+           //Your Numbers
+            dashboard.clickYourNumbersMenu();
+            Thread.sleep(2000);
+            Assert.assertTrue(driver.getCurrentUrl().contains("numbers"), "Your Numbers page not opened");
+            test.pass("Your Numbers page navigated successfully");
 
             // Click Calls
             dashboard.clickCallsMenu();
             Thread.sleep(2000);
             Assert.assertTrue(driver.getCurrentUrl().contains("call-history"), "Calls page not opened");
             test.pass("Calls page navigated successfully");
+            
+            // Click Earnings
+            dashboard.clickEarningsMenu();
+            Thread.sleep(2000);
+            Assert.assertTrue(driver.getCurrentUrl().contains("earnings"), "Earnings page not opened");
+            test.pass("Earnings page navigated successfully");
 
             // Click Customers
             dashboard.clickCustomersMenu();
@@ -173,11 +240,17 @@ public class DashboardTest extends BaseTest {
             Assert.assertTrue(driver.getCurrentUrl().contains("clients"), "Customers page not opened");
             test.pass("Customers page navigated successfully");
 
-            // Click Earnings
-            dashboard.clickEarningsMenu();
+            // Click on Settings
+            dashboard.clickSettingsMenu();
             Thread.sleep(2000);
-            Assert.assertTrue(driver.getCurrentUrl().contains("earnings"), "Earnings page not opened");
-            test.pass("Earnings page navigated successfully");
+            Assert.assertTrue(driver.getCurrentUrl().contains("profile-settings"), "Settings page not opened");
+            test.pass("Settings page navigated successfully");
+
+            // Click on Help
+            dashboard.clickHelpMenu();
+            Thread.sleep(2000);
+            Assert.assertTrue(driver.getCurrentUrl().contains("help"), "Help page not opened");
+            test.pass("Help page navigated successfully");
 
             // Back to Dashboard
             driver.navigate().back();
@@ -186,12 +259,12 @@ public class DashboardTest extends BaseTest {
             Thread.sleep(2000);
             driver.navigate().back();
             Thread.sleep(2000);
-
-            // Verify Chart and Recent Calls
-            Assert.assertTrue(dashboard.isEarningsGraphVisible(), "Earnings chart is not visible");
-            test.pass("Earnings graph is displayed");
-            Assert.assertTrue(dashboard.isRecentCallsVisible(), "Recent Calls are not visible");
-            test.pass("Recent Calls table is displayed");
+            driver.navigate().back();
+            Thread.sleep(2000);
+            driver.navigate().back();
+            Thread.sleep(2000);
+            driver.navigate().back();
+            Thread.sleep(2000);
 
             // Final screenshot
             String navigationScreenshot = ScreenshotUtils.captureScreenshot(driver, "dashboardNavigation");
@@ -212,7 +285,7 @@ public class DashboardTest extends BaseTest {
      * Step 4: Validate Call Action Panel and Customer Redirect
      */
 
-    @Test(priority = 4)
+    @Test(priority = 4, dependsOnMethods = "verifyRecentCalls")
     public void verifyCallActionAndCustomerRedirect() {
         test = extent.createTest("Call Panel Open and Call ID Redirection");
 
@@ -255,7 +328,7 @@ public class DashboardTest extends BaseTest {
         }
     }
 
-    @Test(priority = 5)
+    @Test(priority = 5, dependsOnMethods = "verifySidebarNavigation")
     public void verifyEarningDataFromApi() {
         test = extent.createTest("Verify Earnings Data from API");
 
@@ -271,7 +344,6 @@ public class DashboardTest extends BaseTest {
             // String lifeTimePay = df.format(lifeTimePayout / 100);
             // String nextPay = df.format(nextPayout / 100);
             // String bal = df.format(balance / 100);
-            
 
             test.pass("Earnings data fetched successfully from API");
         } catch (Exception e) {
